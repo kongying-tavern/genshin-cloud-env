@@ -57,40 +57,6 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./composer/api.yml"
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./composer/api.yml"
 '''
 
-# img-local: image local host
-[tasks.img-local] # !! build & run image local host
-dependencies = [
-    { name = "img-local-build" },
-    { name = "img-local-run" }
-]
-
-[tasks.img-local-build] # >!! build image local host
-script = '''
-#!@duckscript
-!include_files ./makefile/util.env.ds ./makefile/util.docker.ds
-prepare_envvars
-check_env
-
-ENV_FILE = get_env ENV_FILE
-PROJECT_NAME = get_env PROJECT_NAME
-
-docker_build "${ENV_FILE}" "${PROJECT_NAME}" "./composer/img-local.yml"
-'''
-
-[tasks.img-local-run] # >!! run image local host
-script = '''
-#!@duckscript
-!include_files ./makefile/util.env.ds ./makefile/util.docker.ds
-prepare_envvars
-check_env
-
-ENV_FILE = get_env ENV_FILE
-PROJECT_NAME = get_env PROJECT_NAME
-
-docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./composer/img-local.yml"
-docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./composer/img-local.yml"
-'''
-
 # img-alist: image alist host
 [tasks.img-alist] # !! build & run image alist host
 dependencies = [
