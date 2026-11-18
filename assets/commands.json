@@ -2,27 +2,45 @@
   {
     "task": "dataenv",
     "desc": "run data services",
-    "children": []
+    "children": [
+      { "task": "dataenv-up", "desc": "start data services" },
+      { "task": "dataenv-down", "desc": "stop data services" }
+    ]
   },
   {
     "task": "api",
-    "desc": "build & run API",
+    "desc": "build & start API",
     "children": [
       { "task": "api-build", "desc": "build API" },
-      { "task": "api-run", "desc": "run API" }
+      { "task": "api-up", "desc": "start API" },
+      { "task": "api-down", "desc": "stop API" }
+    ]
+  },
+  {
+    "task": "img-minio",
+    "desc": "build & start MinIO stack",
+    "children": [
+      { "task": "img-minio-build", "desc": "build MinIO stack" },
+      { "task": "img-minio-up", "desc": "start MinIO stack" },
+      { "task": "img-minio-down", "desc": "stop MinIO stack" }
+    ]
+  },
+  {
+    "task": "img-minio-proxy",
+    "desc": "build & start MinIO proxy",
+    "children": [
+      { "task": "img-minio-proxy-build", "desc": "build MinIO proxy" },
+      { "task": "img-minio-proxy-up", "desc": "start MinIO proxy" },
+      { "task": "img-minio-proxy-down", "desc": "stop MinIO proxy" }
     ]
   },
   {
     "task": "img-alist",
-    "desc": "build & run MinIO stack, proxy and AList",
+    "desc": "build & start AList",
     "children": [
-      { "task": "img-alist-minio", "desc": "build & run MinIO stack" },
-      { "task": "img-alist-minio-build", "desc": "build MinIO stack" },
-      { "task": "img-alist-minio-run", "desc": "run MinIO stack" },
-      { "task": "img-alist-proxy-build", "desc": "build MinIO proxy" },
-      { "task": "img-alist-proxy-run", "desc": "run MinIO proxy" },
-      { "task": "img-alist-dash-build", "desc": "build AList" },
-      { "task": "img-alist-dash-run", "desc": "run AList" }
+      { "task": "img-alist-build", "desc": "build AList" },
+      { "task": "img-alist-up", "desc": "start AList" },
+      { "task": "img-alist-down", "desc": "stop AList" }
     ]
   }
 ]
