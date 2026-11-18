@@ -1,0 +1,24 @@
+include:
+  - ../_network/network.yaml
+  - ../img-minio/compose.yaml
+
+services:
+  minio-proxy:
+    container_name: gsapi-minio-proxy
+    hostname: gsapi-minio-proxy
+    image: gsapi/minio-proxy
+    build:
+      context: .
+      dockerfile: ./compose/proxy.Dockerfile
+    depends_on:
+      minio-init:
+        condition: service_completed_successfully
+    networks:
+      gsapi-img-alist:
+        aliases:
+          - minio-proxy.local
+    volumes:
+      - ${DATA_DIR}/minio-proxy/log:/data/log
+    ports:
+      - ${MINIO_PORT_PROXY:-9010}:80
+    restart: always

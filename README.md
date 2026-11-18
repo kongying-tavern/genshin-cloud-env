@@ -26,13 +26,30 @@ cp .env.example .env
 ```
 .
 ├── .env.example        # 环境变量模板
+├── compose.yaml        # 顶层编排，组合全部服务
 ├── Makefile.toml       # cargo-make 任务定义
-├── composer/           # 各服务的 compose 编排与 Dockerfile
-├── config/             # 构建与服务配置
-│   ├── api/            #   API 配置模板（渲染后写入 cache/）
-│   ├── apt/            #   apt 源配置
-│   ├── img-alist-builder/  # 图片服务构建素材
-│   └── maven/          #   Maven 配置
-├── makefile/           # cargo-make 工具脚本
-└── cache/              # 运行时生成的配置（不入库）
+├── assets/             # 静态资源
+├── helpers/            # cargo-make 工具脚本
+└── services/           # 各服务独立编排，可单独使用
+    ├── _common/        #   通用资源
+    │   └── config/     #     通用构建配置
+    ├── _network/       #   通用网络定义
+    ├── dataenv/        #   数据环境
+    ├── api/            #   API 服务
+    │   ├── compose/    #     Docker Compose 相关
+    │   ├── templates/  #     配置模板
+    │   └── .tmp/       #     渲染后的临时配置（不入库）
+    ├── img-minio/      #   MinIO 相关服务
+    │   ├── compose/    #     Docker Compose 相关
+    │   ├── config/     #     配置
+    │   ├── scripts/    #     脚本
+    │   ├── src/        #     代码
+    │   └── tests/      #     相关测试
+    ├── minio-proxy/    #   MinIO 图片代理服务
+    │   ├── compose/    #     Docker Compose 相关
+    │   ├── config/     #     配置
+    │   └── tests/      #     相关测试
+    └── img-alist/      #   AList 相关服务
+        ├── compose/    #     Docker Compose 相关
+        └── scripts/    #     脚本
 ```

@@ -1,0 +1,7 @@
+include:
+  - services/_network/network.yaml
+  - services/dataenv/compose.yaml
+  - services/img-minio/compose.yaml
+  - services/minio-proxy/compose.yaml
+  - services/img-alist/compose.yaml
+  - services/api/compose.yaml
