@@ -30,9 +30,7 @@ services:
       nacos:
         condition: service_healthy
     networks:
-      gsapi-api:
-        aliases:
-          - api-gateway.local
+      - gsapi-api
     volumes:
       - ${DATA_DIR}/api/logs/gateway:/data/logs
     ports:
@@ -55,12 +53,8 @@ services:
       nacos:
         condition: service_healthy
     networks:
-      gsapi-api:
-        aliases:
-          - api-core.local
-      gsapi-img-alist:
-        aliases:
-          - img-alist.local
+      - gsapi-api
+      - gsapi-img-alist
     environment:
       # JWT 密钥库路径与口令：密钥库以只读文件方式挂载，不再内置在镜像中
       - OAUTH2_JKS_LOCATION=${OAUTH2_JKS_LOCATION:-file:/data/secrets/oauth2.jks}

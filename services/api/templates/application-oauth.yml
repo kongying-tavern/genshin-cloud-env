@@ -3,4 +3,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://api-core.local:8092/.well-known/jwks.json
+          jwk-set-uri: http://api-core:8092/.well-known/jwks.json

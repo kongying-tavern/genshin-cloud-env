@@ -8,9 +8,7 @@ services:
     hostname: gsapi-redis
     image: redis
     networks:
-      gsapi-img-alist:
-        aliases:
-          - redis.local
+      - gsapi-img-alist
     volumes:
       - ${DATA_DIR}/redis/data:/data
       - ${DATA_DIR}/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
@@ -31,9 +29,7 @@ services:
       context: .
       dockerfile: ./compose/server.Dockerfile
     networks:
-      gsapi-img-alist:
-        aliases:
-          - minio.local
+      - gsapi-img-alist
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASS}
@@ -62,15 +58,13 @@ services:
       minio-init:
         condition: service_completed_successfully
     networks:
-      gsapi-img-alist:
-        aliases:
-          - minio-img2webp.local
+      - gsapi-img-alist
     environment:
       TZ: ${MINIO_IMG2WEBP_TZ}
-      REDIS_ADDRESS: redis.local:6379
+      REDIS_ADDRESS: redis:6379
       REDIS_LIST: MINIO_BUCKET_NOTIFY:IMAGE
       MINIO_BUCKET: ${MINIO_BUCKET_IMAGE}
-      MINIO_ADDRESS: minio.local:9000
+      MINIO_ADDRESS: minio:9000
       MINIO_ACCESS_KEY_ID: ${MINIO_KEY}
       MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET}
       MINIO_USE_SSL: false

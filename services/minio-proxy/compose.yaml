@@ -14,9 +14,7 @@ services:
       minio-init:
         condition: service_completed_successfully
     networks:
-      gsapi-img-alist:
-        aliases:
-          - minio-proxy.local
+      - gsapi-img-alist
     volumes:
       - ${DATA_DIR}/minio-proxy/log:/data/log
     ports:

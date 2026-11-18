@@ -6,7 +6,7 @@ LOCK_FILE=${DATA_DIR}/initialized.lock
 
 # Initialization steps
 function step_init_minio () {
-  mc alias set minio http://minio.local:9000 "${MINIO_ROOT_USERNAME}" "${MINIO_ROOT_PASSWORD}"
+  mc alias set minio http://minio:9000 "${MINIO_ROOT_USERNAME}" "${MINIO_ROOT_PASSWORD}"
   mc admin user svcacct add \
     --access-key "${MINIO_KEY}" \
     --secret-key "${MINIO_SECRET}" \
@@ -19,7 +19,7 @@ function step_init_minio () {
 function step_add_img2webp_trigger () {
   mc admin config set minio \
     notify_redis:1 \
-    address="redis.local:6379" \
+    address="redis:6379" \
     format="access" \
     key="MINIO_BUCKET_NOTIFY:IMAGE" \
     password="" \

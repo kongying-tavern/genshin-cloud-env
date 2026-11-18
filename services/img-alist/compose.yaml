@@ -11,9 +11,7 @@ services:
       context: .
       dockerfile: ./compose/server.Dockerfile
     networks:
-      gsapi-img-alist:
-        aliases:
-          - alist.local
+      - gsapi-img-alist
     environment:
       PUID: ${ALIST_PUID:-0}
       PGID: ${ALIST_PGID:-0}

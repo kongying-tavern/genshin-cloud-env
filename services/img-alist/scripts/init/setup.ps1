@@ -55,7 +55,7 @@ function Fetch-Api {
     )
 
     begin {
-        $apiUri = -Join ("http://alist.local:5244/", $Url);
+        $apiUri = -Join ("http://alist:5244/", $Url);
         $authHeaders = $Global:ALIST_TOKEN -eq $null ? @{} : @{ Authorization = $Global:ALIST_TOKEN };
         $bodyData = $Body -eq $null ? @{} : $Body;
         $bodyContent = ConvertTo-Json $bodyData;
@@ -165,12 +165,12 @@ function Step-AddStorage {
         addition = ConvertTo-Json @{
             root_folder_path = "/"
             bucket = ${Env:MINIO_BUCKET_IMAGE}
-            endpoint = "http://minio-proxy.local:80"
+            endpoint = "http://minio-proxy:80"
             region = "minio"
             access_key_id = ${Env:MINIO_KEY}
             secret_access_key = ${Env:MINIO_SECRET}
             session_token = ""
-            custom_host = "minio-proxy.local:80"
+            custom_host = "minio-proxy:80"
             sign_url_expire = 4
             placeholder = ""
             force_path_style = $true
