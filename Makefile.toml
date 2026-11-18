@@ -1,9 +1,13 @@
+# ============================================================
+# Default
+# ============================================================
 [tasks.default]
 alias = "help"
 
-## Sub-commands
-# dataenv: provide data environments
-[tasks.dataenv] # !! startup data environments
+# ============================================================
+# Data environment
+# ============================================================
+[tasks.dataenv]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -17,14 +21,16 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./services/dataenv/compose.yaml"
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./services/dataenv/compose.yaml"
 '''
 
-# api: service api
-[tasks.api] # !! build & daemon api
+# ============================================================
+# API
+# ============================================================
+[tasks.api]
 dependencies = [
     { name = "api-build" },
     { name = "api-run" }
 ]
 
-[tasks.api-build] # >!! build api
+[tasks.api-build]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -43,7 +49,7 @@ replace_env_values_in_file ${ENV_FILE} ./services/api/templates/application-naco
 docker_build "${ENV_FILE}" "${PROJECT_NAME}" "./services/api/compose.yaml"
 '''
 
-[tasks.api-run] # >!! start api
+[tasks.api-run]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -57,8 +63,10 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./services/api/compose.yaml"
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./services/api/compose.yaml"
 '''
 
-# img-alist: image alist host
-[tasks.img-alist] # !! build & run image alist host
+# ============================================================
+# Image alist host
+# ============================================================
+[tasks.img-alist]
 dependencies = [
     { name = "img-alist-minio-build" },
     { name = "img-alist-proxy-build" },
@@ -68,13 +76,14 @@ dependencies = [
     { name = "img-alist-dash-run" },
 ]
 
-[tasks.img-alist-minio] # >!! build & run image alist host (minio)
+# ==== MinIO ====
+[tasks.img-alist-minio]
 dependencies = [
     { name = "img-alist-minio-build" },
     { name = "img-alist-minio-run" }
 ]
 
-[tasks.img-alist-minio-build] # >!! build image alist host (minio)
+[tasks.img-alist-minio-build]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -87,7 +96,7 @@ PROJECT_NAME = get_env PROJECT_NAME
 docker_build "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-minio/compose.yaml"
 '''
 
-[tasks.img-alist-minio-run] # >!! run image alist host (minio)
+[tasks.img-alist-minio-run]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -101,7 +110,8 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-minio/compose.yaml"
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-minio/compose.yaml"
 '''
 
-[tasks.img-alist-proxy-build] # >!! build image alist host (minio proxy)
+# ==== MinIO proxy ====
+[tasks.img-alist-proxy-build]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -114,7 +124,7 @@ PROJECT_NAME = get_env PROJECT_NAME
 docker_build "${ENV_FILE}" "${PROJECT_NAME}" "./services/minio-proxy/compose.yaml"
 '''
 
-[tasks.img-alist-proxy-run] # >!! run image alist host (minio proxy)
+[tasks.img-alist-proxy-run]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -128,7 +138,8 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./services/minio-proxy/compose.yaml
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./services/minio-proxy/compose.yaml"
 '''
 
-[tasks.img-alist-dash-build] # >!! build image alist host (alist)
+# ==== AList ====
+[tasks.img-alist-dash-build]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -141,7 +152,7 @@ PROJECT_NAME = get_env PROJECT_NAME
 docker_build "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-alist/compose.yaml"
 '''
 
-[tasks.img-alist-dash-run] # >!! run image alist host (alist)
+[tasks.img-alist-dash-run]
 script = '''
 #!@duckscript
 !include_files ./helpers/env.ds ./helpers/docker.ds
@@ -155,7 +166,9 @@ docker_down "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-alist/compose.yaml"
 docker_up "${ENV_FILE}" "${PROJECT_NAME}" "./services/img-alist/compose.yaml"
 '''
 
-# help
+# ============================================================
+# Help
+# ============================================================
 [tasks.help]
 script = '''
 #!@duckscript
@@ -167,15 +180,15 @@ banner = readfile ./assets/banner.txt
 echo ${banner}
 
 # Generate commands
-cmds = get_help_commands
+lines = get_help_commands
 
 env_file = get_env ENV_FILE
 echo Current env file:
 println -c magenta " ${env_file}"
 
 echo Available commands:
-print_help_commands ${cmds}
-release ${cmds}
+print_help_commands ${lines}
+release --recursive ${lines}
 
 echo What do you want? >>>
 cmd_name = read

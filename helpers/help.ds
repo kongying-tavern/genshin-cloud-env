@@ -1,75 +1,65 @@
 !include_files ./string.ds
 
 fn get_help_commands
-    commands = array
-    makefile = readfile ./Makefile.toml
-    lines = split ${makefile} "\n"
+    commands_text = readfile ./assets/commands.json
+    config = json_parse --collection ${commands_text}
+    lines = array
 
-    for line in ${lines}
-        exist_task = starts_with ${line} [tasks.
-        exist_desc = contains ${line} !!
-        if ${exist_task} and ${exist_desc}
-            # Get command name
-            name_start = indexof ${line} [tasks.
-            name_start = calc ${name_start} + 7 # 7 is length of `tasks.`
-            name_end = indexof ${line} ]
-            cmd_name = substring ${line} ${name_start} ${name_end}
+    for cmd in ${config}
+        task_name = map_get ${cmd} task
+        desc = map_get ${cmd} desc
 
-            # Get command desc
-            desc_start = indexof ${line} !!
-            desc_start = calc ${desc_start} + 2 # 2 is length of `!!`
-            cmd_desc = substring ${line} ${desc_start}
-            cmd_desc = trim_start ${cmd_desc}
-            modifier_start = calc ${desc_start} - 3 # 3 is sum of 1 (offset) and 2 (length of `!!`)
-            modifier_end = calc ${modifier_start} + 1
-            desc_modifier = substring ${line} ${modifier_start} ${modifier_end}
+        task_len = length ${task_name}
+        gap_len = calc 30 - ${task_len}
+        gap = str_repeat " " ${gap_len}
 
-            if eq ${desc_modifier} ">"
-                indent_len = set 2
-                cmd_color = set green
-            else
-                indent_len = set 0
-                cmd_color = set blue
-            end
+        line = map
+        map_put ${line} color blue
+        map_put ${line} prefix "  - "
+        map_put ${line} task ${task_name}
+        map_put ${line} gap ${gap}
+        map_put ${line} desc ${desc}
+        array_push ${lines} ${line}
 
-            # Get command gap
-            name_len = length ${cmd_name}
-            gap_len = calc 30 - ${name_len} - ${indent_len}
-            cmd_indent = str_repeat " " ${indent_len}
-            cmd_gap = str_repeat " " ${gap_len}
+        children = map_get ${cmd} children
+        for child in ${children}
+            child_task = map_get ${child} task
+            child_desc = map_get ${child} desc
 
-            # Prepare entity map
-            cmd_map = map
-            map_put ${cmd_map} color ${cmd_color}
-            map_put ${cmd_map} indent ${cmd_indent}
-            map_put ${cmd_map} name ${cmd_name}
-            map_put ${cmd_map} gap ${cmd_gap}
-            map_put ${cmd_map} desc ${cmd_desc}
+            child_task_len = length ${child_task}
+            child_gap_len = calc 28 - ${child_task_len}
+            child_gap = str_repeat " " ${child_gap_len}
 
-            array_push ${commands} ${cmd_map}
+            child_line = map
+            map_put ${child_line} color green
+            map_put ${child_line} prefix "    - "
+            map_put ${child_line} task ${child_task}
+            map_put ${child_line} gap ${child_gap}
+            map_put ${child_line} desc ${child_desc}
+            array_push ${lines} ${child_line}
         end
     end
 
-    release ${lines}
-    return ${commands}
+    # Printable rows own their values; the parsed config can be released here.
+    release --recursive ${config}
+    return ${lines}
 end
 
 fn print_help_commands
-    for cmd in ${1}
-        cmd_color = map_get ${cmd} color
-        cmd_indent = map_get ${cmd} indent
-        cmd_name = map_get ${cmd} name
-        cmd_gap = map_get ${cmd} gap
-        cmd_desc = map_get ${cmd} desc
+    lines = set ${1}
 
-        print ${cmd_indent}
-        print "  - "
-        print -c ${cmd_color} ${cmd_name}
-        print ${cmd_gap}
+    for line in ${lines}
+        color = map_get ${line} color
+        prefix = map_get ${line} prefix
+        task_name = map_get ${line} task
+        gap = map_get ${line} gap
+        desc = map_get ${line} desc
+
+        print ${prefix}
+        print -c ${color} ${task_name}
+        print ${gap}
         print " "
-        print ${cmd_desc}
+        print ${desc}
         echo
-
-        release ${cmd}
     end
 end

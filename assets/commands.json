@@ -1,0 +1,28 @@
+[
+  {
+    "task": "dataenv",
+    "desc": "run data services",
+    "children": []
+  },
+  {
+    "task": "api",
+    "desc": "build & run API",
+    "children": [
+      { "task": "api-build", "desc": "build API" },
+      { "task": "api-run", "desc": "run API" }
+    ]
+  },
+  {
+    "task": "img-alist",
+    "desc": "build & run MinIO stack, proxy and AList",
+    "children": [
+      { "task": "img-alist-minio", "desc": "build & run MinIO stack" },
+      { "task": "img-alist-minio-build", "desc": "build MinIO stack" },
+      { "task": "img-alist-minio-run", "desc": "run MinIO stack" },
+      { "task": "img-alist-proxy-build", "desc": "build MinIO proxy" },
+      { "task": "img-alist-proxy-run", "desc": "run MinIO proxy" },
+      { "task": "img-alist-dash-build", "desc": "build AList" },
+      { "task": "img-alist-dash-run", "desc": "run AList" }
+    ]
+  }
+]
