@@ -54,4 +54,4 @@ services:
       MINIO_KEY: ${MINIO_KEY}
       MINIO_SECRET: ${MINIO_SECRET}
     volumes:
-      - ${DATA_DIR}/init/alist-init:/data/record
+      - ${DATA_DIR}/alist/init:/data/record

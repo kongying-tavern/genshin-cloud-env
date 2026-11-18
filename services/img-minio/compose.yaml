@@ -100,4 +100,4 @@ services:
       MINIO_KEY: ${MINIO_KEY}
       MINIO_SECRET: ${MINIO_SECRET}
     volumes:
-      - ${DATA_DIR}/init/minio-init:/data/record
+      - ${DATA_DIR}/minio/init:/data/record
