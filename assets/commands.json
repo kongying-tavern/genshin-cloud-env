@@ -1,46 +1,46 @@
 [
   {
     "task": "dataenv",
-    "desc": "run data services",
+    "desc": "Data Env: Startup",
     "children": [
-      { "task": "dataenv-up", "desc": "start data services" },
-      { "task": "dataenv-down", "desc": "stop data services" }
+      { "task": "dataenv-up", "desc": "Data Env: Startup" },
+      { "task": "dataenv-down", "desc": "Data Env: Shutdown" }
     ]
   },
   {
     "task": "api",
-    "desc": "build & start API",
+    "desc": "API: Build & Startup",
     "children": [
-      { "task": "api-build", "desc": "build API" },
-      { "task": "api-up", "desc": "start API" },
-      { "task": "api-down", "desc": "stop API" }
+      { "task": "api-build", "desc": "API: Build" },
+      { "task": "api-up", "desc": "API: Startup" },
+      { "task": "api-down", "desc": "API: Shutdown" }
     ]
   },
   {
     "task": "img-minio",
-    "desc": "build & start MinIO stack",
+    "desc": "MinIO: Build & Startup",
     "children": [
-      { "task": "img-minio-build", "desc": "build MinIO stack" },
-      { "task": "img-minio-up", "desc": "start MinIO stack" },
-      { "task": "img-minio-down", "desc": "stop MinIO stack" }
+      { "task": "img-minio-build", "desc": "MinIO: Build" },
+      { "task": "img-minio-up", "desc": "MinIO: Startup" },
+      { "task": "img-minio-down", "desc": "MinIO: Shutdown" }
     ]
   },
   {
     "task": "img-minio-proxy",
-    "desc": "build & start MinIO proxy",
+    "desc": "MinIO Proxy: Build & Startup",
     "children": [
-      { "task": "img-minio-proxy-build", "desc": "build MinIO proxy" },
-      { "task": "img-minio-proxy-up", "desc": "start MinIO proxy" },
-      { "task": "img-minio-proxy-down", "desc": "stop MinIO proxy" }
+      { "task": "img-minio-proxy-build", "desc": "MinIO Proxy: Build" },
+      { "task": "img-minio-proxy-up", "desc": "MinIO Proxy: Startup" },
+      { "task": "img-minio-proxy-down", "desc": "MinIO Proxy: Shutdown" }
     ]
   },
   {
     "task": "img-alist",
-    "desc": "build & start AList",
+    "desc": "AList: Build & Startup",
     "children": [
-      { "task": "img-alist-build", "desc": "build AList" },
-      { "task": "img-alist-up", "desc": "start AList" },
-      { "task": "img-alist-down", "desc": "stop AList" }
+      { "task": "img-alist-build", "desc": "AList: Build" },
+      { "task": "img-alist-up", "desc": "AList: Startup" },
+      { "task": "img-alist-down", "desc": "AList: Shutdown" }
     ]
   }
 ]
